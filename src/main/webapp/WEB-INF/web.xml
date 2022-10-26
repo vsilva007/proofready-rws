@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+         id="WebApp_ID" version="3.1">
+    <display-name>AppCorpRWS</display-name>
+
+    <context-param>
+        <param-name>javax.ws.rs.Application</param-name>
+        <param-value>net.proofready.rws.RWSApplication</param-value>
+    </context-param>
+    <context-param>
+        <param-name>resteasy.providers</param-name>
+        <param-value>net.proofready.rws.providers.JacksonConfigurator</param-value>
+    </context-param>
+    <context-param>
+        <param-name>resteasy.role.based.security</param-name>
+        <param-value>true</param-value>
+    </context-param>
+
+    <servlet>
+        <servlet-name>Resteasy</servlet-name>
+        <servlet-class>org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Resteasy</servlet-name>
+        <url-pattern>/*</url-pattern>
+    </servlet-mapping>
+
+    <listener>
+        <description>The class instance which will be notified when the application context has been initialized and destroyed</description>
+        <listener-class>net.proofready.rws.RWSFactory</listener-class>
+    </listener>
+
+    <!-- LOGIN CONFIGURATION = BASIC AUTH -->
+
+    <login-config>
+        <auth-method>BASIC</auth-method>
+        <realm-name>AppCorpRealm</realm-name>
+    </login-config>
+
+    <!-- SECURITY ROLES -->
+
+    <security-role>
+        <role-name>CONSULTA</role-name>
+    </security-role>
+    <security-role>
+        <role-name>ADMIN</role-name>
+    </security-role>
+    <security-role>
+        <role-name>SUPERV</role-name>
+    </security-role>
+
+    <!-- SECURITY CONSTRAINTS -->
+
+    <security-constraint>
+        <display-name>appcorp</display-name>
+        <web-resource-collection>
+            <web-resource-name>TomsService Secure</web-resource-name>
+            <url-pattern>/toms/facturafile</url-pattern>
+            <http-method>GET</http-method>
+            <http-method>POST</http-method>
+        </web-resource-collection>
+    </security-constraint>
+
+</web-app>
